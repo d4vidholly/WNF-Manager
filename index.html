@@ -19,17 +19,36 @@
 <div id="app">
   <!-- Screen 1: Selection -->
   <div id="selectionScreen">
-    <div class="grid" id="playerGrid"></div>
 
+    <div class="playerpool">
+      <h2>Player Pool</h2>
+
+      <div id="sort-controls">
+        <label for="sort-options">Sort by:</label>
+        <select id="sort-options">
+          <option value="alphabetical">Alphabetical (A–Z)</option>
+          <option value="position">Position (DEF → ATT)</option>
+          <option value="rating">Rating (3 → 1)</option>
+          <option value="selected">Selected</option>
+        </select>
+        <button id="sort-button">Sort</button>
+      </div>
+
+      <div id="selectedCount">Selected: 0</div>
+    </div>
+
+    <div class="grid" id="playerGrid"></div>
     <div class="spacer"></div>
 
     <footer>
-    <div class="button-container">
-      <button onclick="randomSelect()">Select 18</button>
-      <button onclick="generateTeams()">Generate Teams</button>
-    </div>
+      <div class="button-container">
+        <button onclick="randomSelect()">Select 18</button>
+        <button onclick="generateTeams()">Generate Teams</button>
+      </div>
     </footer>
-  </div>
+
+  </div> <!-- End of selectionScreen -->
+</div>
 
   <!-- Screen 2: Teams Display -->
   <div id="teamScreen" style="display: none;">
@@ -77,7 +96,7 @@ const players = [
   { id: 2, name: "Minanda", age: 29, position: "MID", rating: 3, selected: false },
   { id: 3, name: "Ximelez", age: 31, position: "MID", rating: 2, selected: false },
   { id: 4, name: "Ivarov", age: 30, position: "DEF", rating: 3, selected: false },
-  { id: 5, name: "Stremer", age: 26, position: "DEF", rating: 2, selected: false },
+  { id: 5, name: "Pauldini", age: 26, position: "DEF", rating: 2, selected: false },
   { id: 6, name: "Jaric", age: 24, position: "DEF", rating: 1, selected: false },
   { id: 7, name: "Dodo", age: 22, position: "ATT", rating: 1, selected: false },
   { id: 8, name: "Valeny", age: 33, position: "DEF", rating: 3, selected: false },
@@ -91,17 +110,23 @@ const players = [
   { id: 16, name: "Ruskin", age: 32, position: "DEF", rating: 2, selected: false },
   { id: 17, name: "Hamsun", age: 30, position: "MID", rating: 2, selected: false },
   { id: 18, name: "Celnili", age: 25, position: "MID", rating: 1, selected: false },
-  { id: 19, name: "Giersen", age: 27, position: "DEF", rating: 3, selected: false },
+  { id: 19, name: "Snoman", age: 27, position: "ATT", rating: 3, selected: false },
   { id: 20, name: "Shimizu", age: 21, position: "ATT", rating: 1, selected: false },
   { id: 21, name: "Balmaceda", age: 26, position: "MID", rating: 2, selected: false },
-  { id: 22, name: "J. Broon", age: 30, position: "DEF", rating: 2, selected: false },
+  { id: 22, name: "Jay Broon", age: 30, position: "DEF", rating: 2, selected: false },
   { id: 23, name: "Kimura", age: 24, position: "DEF", rating: 1, selected: false },
   { id: 24, name: "Gutierrez", age: 28, position: "MID", rating: 3, selected: false },
   { id: 25, name: "Kowalski", age: 31, position: "DEF", rating: 2, selected: false },
   { id: 26, name: "Samson", age: 31, position: "MID", rating: 3, selected: false },
   { id: 27, name: "Carlitos", age: 27, position: "DEF", rating: 2, selected: false },
-  { id: 28, name: "Barota", age: 29, position: "ATT", rating: 3, selected: false },
-  { id: 29, name: "Babanguida", age: 23, position: "ATT", rating: 1, selected: false }
+  { id: 28, name: "Sindala", age: 29, position: "ATT", rating: 3, selected: false },
+  { id: 29, name: "Babanguida", age: 23, position: "ATT", rating: 1, selected: false },
+  { id: 30, name: "Minthol", age: 45, position: "ATT", rating: 1, selected: false },
+  { id: 31, name: "Gosper", age: 37, position: "DEF", rating: 2, selected: false },
+  { id: 32, name: "Toona", age: 35, position: "MID", rating: 3, selected: false },
+    { id: 33, name: "Barking", age: 45, position: "ATT", rating: 2, selected: false },
+        { id: 34, name: "Layerton", age: 45, position: "ATT", rating: 2, selected: false },
+        { id: 35, name: "Ivan", age: 45, position: "DEF", rating: 2, selected: false }
   
 ];
 
@@ -110,11 +135,18 @@ let teamB = [];
 
 function renderPlayers() {
   const grid = document.getElementById("playerGrid");
+  const selectedCount = document.getElementById("selectedCount");
+
   grid.innerHTML = "";
+
+  let count = 0;
   players.forEach(player => {
+    if (player.selected) count++;
+
     const card = document.createElement("div");
     card.className = "card" + (player.selected ? " selected" : "");
     card.innerHTML = `
+      ${player.selected ? '<div class="tick">✔️</div>' : ''}
       <div style="font-size: 40px;">👤</div>
       <div><strong>${player.name}</strong></div>
       <div>Age: ${player.age}</div>
@@ -126,7 +158,27 @@ function renderPlayers() {
     };
     grid.appendChild(card);
   });
+
+  selectedCount.textContent = `Selected: ${count}`;
 }
+
+const positionOrder = { DEF: 0, MID: 1, ATT: 2 };
+
+document.getElementById('sort-button').addEventListener('click', () => {
+  const sortType = document.getElementById('sort-options').value;
+
+  if (sortType === "alphabetical") {
+    players.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortType === "position") {
+    players.sort((a, b) => positionOrder[a.position] - positionOrder[b.position]);
+  } else if (sortType === "rating") {
+    players.sort((a, b) => b.rating - a.rating); // 3 → 1
+  } else if (sortType === "selected") {
+    players.sort((a, b) => (b.selected ? 1 : 0) - (a.selected ? 1 : 0)); // selected first
+  }
+
+  renderPlayers(); // Refresh UI
+});
 
 function randomSelect() {
   players.forEach(p => p.selected = false);
@@ -134,6 +186,8 @@ function randomSelect() {
   shuffled.slice(0, 18).forEach(p => p.selected = true);
   renderPlayers();
 }
+
+
 
 function generateTeams() {
   const selectedPlayers = players.filter(p => p.selected);
