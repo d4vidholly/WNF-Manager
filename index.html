@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="styles.css">
+  <title>Assistant Manager</title>
+  
+</head>
+<body>
+
+<header>
+  <nav>
+    <h1>WNF Manager 25</h1>
+  </nav>
+  
+</header>
+
+<div id="app">
+  <!-- Screen 1: Selection -->
+  <div id="selectionScreen">
+    <div class="grid" id="playerGrid"></div>
+
+    <div class="spacer"></div>
+
+    <footer>
+    <div class="button-container">
+      <button onclick="randomSelect()">Select 18</button>
+      <button onclick="generateTeams()">Generate Teams</button>
+    </div>
+    </footer>
+  </div>
+
+  <!-- Screen 2: Teams Display -->
+  <div id="teamScreen" style="display: none;">
+    <div class="teams">
+      <div class="team" id="teamAContainer" ondragover="allowDrop(event)" ondrop="drop(event, 'A')">
+        <h2>Team A (Score: <span id="scoreA">0</span>)</h2>
+
+  
+
+
+        <div id="teamAFormation"></div>
+      </div>
+      <div class="team" id="teamBContainer" ondragover="allowDrop(event)" ondrop="drop(event, 'B')">
+        <h2>Team B (Score: <span id="scoreB">0</span>)</h2>
+
+        <div id="teamBFormation"></div>
+      </div>
+    </div>
+
+<footer>
+<div class="footer-buttons">
+      <button onclick="goBack()">Back</button>
+      <button id="previewBtn" class="button">Preview</button>
+      <button onclick="window.print()">Print</button>
+    </div>
+</footer>
+    <div id="previewModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span id="closePreview" class="close">&times;</span>
+    <h2>Team Comparison</h2>
+    <div id="comparisonChart"></div>
+  </div>
+</div>
+    
+  </div>
+</div>
+
+<script>
+
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+const players = [
+  { id: 0, name: "Hollywood", age: 32, position: "MID", rating: 3, selected: false },
+  { id: 1, name: "Castolo", age: 27, position: "ATT", rating: 3, selected: false },
+  { id: 2, name: "Minanda", age: 29, position: "MID", rating: 3, selected: false },
+  { id: 3, name: "Ximelez", age: 31, position: "MID", rating: 2, selected: false },
+  { id: 4, name: "Ivarov", age: 30, position: "DEF", rating: 3, selected: false },
+  { id: 5, name: "Stremer", age: 26, position: "DEF", rating: 2, selected: false },
+  { id: 6, name: "Jaric", age: 24, position: "DEF", rating: 1, selected: false },
+  { id: 7, name: "Dodo", age: 22, position: "ATT", rating: 1, selected: false },
+  { id: 8, name: "Valeny", age: 33, position: "DEF", rating: 3, selected: false },
+  { id: 9, name: "Espimas", age: 28, position: "MID", rating: 2, selected: false },
+  { id: 10, name: "Zamenhof", age: 25, position: "MID", rating: 1, selected: false },
+  { id: 11, name: "Ordaz", age: 27, position: "ATT", rating: 2, selected: false },
+  { id: 12, name: "Huylens", age: 30, position: "DEF", rating: 2, selected: false },
+  { id: 13, name: "Lothar", age: 23, position: "DEF", rating: 1, selected: false },
+  { id: 14, name: "El Moubarki", age: 29, position: "MID", rating: 3, selected: false },
+  { id: 15, name: "Orange013", age: 24, position: "ATT", rating: 2, selected: false },
+  { id: 16, name: "Ruskin", age: 32, position: "DEF", rating: 2, selected: false },
+  { id: 17, name: "Hamsun", age: 30, position: "MID", rating: 2, selected: false },
+  { id: 18, name: "Celnili", age: 25, position: "MID", rating: 1, selected: false },
+  { id: 19, name: "Giersen", age: 27, position: "DEF", rating: 3, selected: false },
+  { id: 20, name: "Shimizu", age: 21, position: "ATT", rating: 1, selected: false },
+  { id: 21, name: "Balmaceda", age: 26, position: "MID", rating: 2, selected: false },
+  { id: 22, name: "J. Broon", age: 30, position: "DEF", rating: 2, selected: false },
+  { id: 23, name: "Kimura", age: 24, position: "DEF", rating: 1, selected: false },
+  { id: 24, name: "Gutierrez", age: 28, position: "MID", rating: 3, selected: false },
+  { id: 25, name: "Kowalski", age: 31, position: "DEF", rating: 2, selected: false },
+  { id: 26, name: "Samson", age: 31, position: "MID", rating: 3, selected: false },
+  { id: 27, name: "Carlitos", age: 27, position: "DEF", rating: 2, selected: false },
+  { id: 28, name: "Barota", age: 29, position: "ATT", rating: 3, selected: false },
+  { id: 29, name: "Babanguida", age: 23, position: "ATT", rating: 1, selected: false }
+  
+];
+
+let teamA = [];
+let teamB = [];
+
+function renderPlayers() {
+  const grid = document.getElementById("playerGrid");
+  grid.innerHTML = "";
+  players.forEach(player => {
+    const card = document.createElement("div");
+    card.className = "card" + (player.selected ? " selected" : "");
+    card.innerHTML = `
+      <div style="font-size: 40px;">👤</div>
+      <div><strong>${player.name}</strong></div>
+      <div>Age: ${player.age}</div>
+      <div>${player.position} | ⭐ ${player.rating}</div>
+    `;
+    card.onclick = () => {
+      player.selected = !player.selected;
+      renderPlayers();
+    };
+    grid.appendChild(card);
+  });
+}
+
+function randomSelect() {
+  players.forEach(p => p.selected = false);
+  const shuffled = [...players].sort(() => 0.5 - Math.random());
+  shuffled.slice(0, 18).forEach(p => p.selected = true);
+  renderPlayers();
+}
+
+function generateTeams() {
+  const selectedPlayers = players.filter(p => p.selected);
+  const total = selectedPlayers.length;
+
+  if (total < 10) {
+    alert("Select at least 10 players to generate teams.");
+    return;
+  }
+
+  // Step 1: Group by position
+  const grouped = {};
+  selectedPlayers.forEach(p => {
+    if (!grouped[p.position]) grouped[p.position] = [];
+    grouped[p.position].push(p);
+  });
+
+  // Step 2: Sort players within each position by rating (descending)
+  for (const pos in grouped) {
+    grouped[pos].sort((a, b) => b.rating - a.rating);
+  }
+
+// Step 2 onward (inside generateTeams)
+teamA = [];
+teamB = [];
+
+  // Step 3: Distribute each position alternately
+  for (const pos in grouped) {
+    const group = grouped[pos];
+    group.forEach((player, index) => {
+      if (index % 2 === 0) {
+        teamA.push(player);
+      } else {
+        teamB.push(player);
+      }
+    });
+  }
+
+  // Step 4: Balance team sizes if necessary (handle odd total)
+  while (Math.abs(teamA.length - teamB.length) > 1) {
+    const source = teamA.length > teamB.length ? teamA : teamB;
+    const target = source === teamA ? teamB : teamA;
+    const moved = source.pop();
+    target.push(moved);
+  }
+
+  // Step 5: Optimize score balance if needed
+  let scoreA = teamA.reduce((sum, p) => sum + p.rating, 0);
+  let scoreB = teamB.reduce((sum, p) => sum + p.rating, 0);
+  let diff = Math.abs(scoreA - scoreB);
+
+  if (diff > 2) {
+    let improved = false;
+
+    for (let i = 0; i < teamA.length; i++) {
+      for (let j = 0; j < teamB.length; j++) {
+        const a = teamA[i];
+        const b = teamB[j];
+
+        if (a.position !== b.position) continue; // only swap same-position players
+
+        const newScoreA = scoreA - a.rating + b.rating;
+        const newScoreB = scoreB - b.rating + a.rating;
+        const newDiff = Math.abs(newScoreA - newScoreB);
+
+        if (newDiff < diff) {
+          // Perform swap
+          teamA[i] = b;
+          teamB[j] = a;
+          scoreA = newScoreA;
+          scoreB = newScoreB;
+          diff = newDiff;
+          improved = true;
+          break;
+        }
+      }
+      if (improved) break;
+    }
+  }
+
+  document.getElementById("selectionScreen").style.display = "none";
+  document.getElementById("teamScreen").style.display = "block";
+  renderTeams();
+}
+
+function renderTeams() {
+  document.getElementById("scoreA").textContent = teamA.reduce((sum, p) => sum + p.rating, 0);
+  document.getElementById("scoreB").textContent = teamB.reduce((sum, p) => sum + p.rating, 0);
+  renderFormation(teamA, "teamAFormation");
+  renderFormation(teamB, "teamBFormation");
+}
+
+function renderFormation(team, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  const positions = { DEF: [], MID: [], ATT: [] };
+  team.forEach(p => positions[p.position].push(p));
+
+  const rowLimits = { DEF: 5, MID: 5, ATT: 4 };
+
+  for (const pos of ["DEF", "MID", "ATT"]) {
+    const playersInPos = positions[pos];
+    for (let i = 0; i < playersInPos.length; i += rowLimits[pos]) {
+      const row = document.createElement("div");
+      row.className = "formation-row";
+      playersInPos.slice(i, i + rowLimits[pos]).forEach(p => {
+        const card = document.createElement("div");
+card.className = "mini-card";
+card.innerHTML = `
+  <div class="mini-photo">👤</div>
+  <div class="mini-info">
+    <strong>${p.name}</strong><br>
+    ${p.position}, ⭐${p.rating}
+  </div>
+`;
+
+if (isTouchDevice) {
+  card.onclick = () => movePlayer(p.id, containerId.includes('A') ? 'B' : 'A');
+} else {
+  card.draggable = true;
+  card.ondragstart = e => drag(e, p.id);
+}
+        card.draggable = true;
+        card.ondragstart = e => drag(e, p.id);
+        card.innerHTML = `
+          <div class="mini-photo">👤</div>
+          <div class="mini-info">
+            <strong>${p.name}</strong><br>
+            ${p.position}, ⭐${p.rating}
+          </div>
+        `;
+        row.appendChild(card);
+      });
+      container.appendChild(row);
+    }
+  }
+}
+
+function drag(event, playerId) {
+  event.dataTransfer.setData("text/plain", playerId);
+}
+
+function allowDrop(event) {
+  event.preventDefault();
+}
+
+function drop(event, teamLabel) {
+  event.preventDefault();
+  const playerId = parseInt(event.dataTransfer.getData("text/plain"));
+  const player = [...teamA, ...teamB].find(p => p.id === playerId);
+
+  if (!player) return;
+
+  if (teamLabel === "A" && !teamA.includes(player)) {
+    teamB = teamB.filter(p => p.id !== playerId);
+    teamA.push(player);
+  } else if (teamLabel === "B" && !teamB.includes(player)) {
+    teamA = teamA.filter(p => p.id !== playerId);
+    teamB.push(player);
+  }
+
+  renderTeams();
+}
+
+function movePlayer(playerId, targetTeamLabel) {
+  const player = [...teamA, ...teamB].find(p => p.id === playerId);
+  if (!player) return;
+
+  if (targetTeamLabel === "A") {
+    teamB = teamB.filter(p => p.id !== playerId);
+    teamA.push(player);
+  } else {
+    teamA = teamA.filter(p => p.id !== playerId);
+    teamB.push(player);
+  }
+
+  renderTeams();
+}
+
+function goBack() {
+  document.getElementById("teamScreen").style.display = "none";
+  document.getElementById("selectionScreen").style.display = "block";
+}
+
+function shuffleArray(array) {
+  return array
+    .map((a) => ({ sort: Math.random(), value: a }))
+    .sort((a, b) => a.sort - b.sort)
+    .map((a) => a.value);
+}
+
+// Initial render
+renderPlayers();
+
+document.getElementById("previewBtn").onclick = () => {
+  const categories = ["Defence", "Midfield", "Attack", "Overall"];
+  const categoryFilters = {
+    Defence: p => p.position === "DEF",
+    Midfield: p => p.position === "MID",
+    Attack: p => p.position === "ATT",
+    Overall: () => true
+  };
+
+  function total(players, filterFn) {
+    return players.filter(filterFn).reduce((sum, p) => sum + p.rating, 0);
+  }
+
+  const teamAData = categories.map(cat => total(teamA, categoryFilters[cat]));
+  const teamBData = categories.map(cat => total(teamB, categoryFilters[cat]));
+
+const chartHTML = categories.map((cat, i) => {
+  const a = teamAData[i];
+  const b = teamBData[i];
+  const total = a + b || 1; // prevent divide-by-zero
+  const aPercent = (a / total) * 100;
+  const bPercent = (b / total) * 100;
+
+  return `
+    <div class="bar-container">
+      <div class="bar-label"><strong>${cat}</strong></div>
+      <div class="bar">
+        <div class="bar-A" style="width: ${aPercent}%;"><span>${a}</span></div>
+        <div class="bar-B" style="width: ${bPercent}%;"><span>${b}</span></div>
+      </div>
+    </div>
+  `;
+}).join("");
+
+document.getElementById("previewBtn").onclick = () => {
+  const categories = ["Defence", "Midfield", "Attack", "Overall"];
+  const categoryFilters = {
+    Defence: p => p.position === "DEF",
+    Midfield: p => p.position === "MID",
+    Attack: p => p.position === "ATT",
+    Overall: () => true
+  };
+
+  function total(players, filterFn) {
+    return players.filter(filterFn).reduce((sum, p) => sum + p.rating, 0);
+  }
+
+  const teamAData = categories.map(cat => total(teamA, categoryFilters[cat]));
+  const teamBData = categories.map(cat => total(teamB, categoryFilters[cat]));
+
+  const chartHTML = categories.map((cat, i) => {
+    const a = teamAData[i];
+    const b = teamBData[i];
+    const total = a + b || 1; // avoid divide-by-zero
+    const aPercent = (a / total) * 100;
+    const bPercent = (b / total) * 100;
+
+    return `
+      <div class="bar-container">
+        <div class="bar-label"><strong>${cat}</strong></div>
+        <div class="bar">
+          <div class="bar-A" style="width: ${aPercent}%;"><span>${a}</span></div>
+          <div class="bar-B" style="width: ${bPercent}%;"><span>${b}</span></div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  document.getElementById("comparisonChart").innerHTML = chartHTML;
+  document.getElementById("previewModal").style.display = "block";
+};
+
+document.getElementById("closePreview").onclick = () => {
+  document.getElementById("previewModal").style.display = "none";
+};
+
+  document.getElementById("comparisonChart").innerHTML = chartHTML;
+  document.getElementById("previewModal").style.display = "block";
+};
+
+document.getElementById("closePreview").onclick = () => {
+  document.getElementById("previewModal").style.display = "none";
+};
+
+document.getElementById("colorSelect").addEventListener("change", function () {
+  const selectedColor = this.value;
+  document.querySelector(".modal-content").style.backgroundColor = selectedColor;
+});
+
+</script>
+
+</body>
+</html>
