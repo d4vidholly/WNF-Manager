@@ -76,12 +76,13 @@ footer {
   }
 
   .team {
+    margin: 10px;
     width: 100%;
     background: #f4e6ff;
     border: 5px solid #5A3A8D;
     padding: 10px;
     border-radius: 10px;
-    height: auto;
+    height: 60vh;
 
   }
 
@@ -98,7 +99,7 @@ footer {
   }
 
   .mini-card {
-    width: 100px;
+    width: 60px;
     background: white;
     border: 2px solid #ccc;
     padding: 10px;
@@ -222,6 +223,7 @@ footer {
   }
 
     .mini-card {
+        width: 100px;
     margin: 0 30px 100px 30px;
   }
 
