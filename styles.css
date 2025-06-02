@@ -95,16 +95,22 @@ footer {
 
   }
 
+  label {
+    font-size: 16px;
+  }
+
+  #sort-options {
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
   .team h2 {
     text-align: center;
     margin-bottom: 20px;
     color: white;
   }
 
-  .playerpool   {
-    color: white;
-    margin: 0;
-  }
 
   .formation-row {
     display: flex;
@@ -156,6 +162,47 @@ footer {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+}
+
+.playerpool {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+      color: white;
+    margin: 10px;
+}
+
+#sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+footer {
+  background-color: #5A3A8D;
+  color: white;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.left-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+#selectedCount {
+  font-size: 1.2rem;
 }
 
 .modal {

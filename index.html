@@ -21,31 +21,31 @@
   <div id="selectionScreen">
 
     <div class="playerpool">
-      <h2>Player Pool</h2>
-
-      <div id="sort-controls">
-        <label for="sort-options">Sort by:</label>
-        <select id="sort-options">
-          <option value="alphabetical">Alphabetical (A–Z)</option>
-          <option value="position">Position (DEF → ATT)</option>
-          <option value="rating">Rating (3 → 1)</option>
-          <option value="selected">Selected</option>
-        </select>
-        <button id="sort-button">Sort</button>
-      </div>
-
-      <div id="selectedCount">Selected: 0</div>
-    </div>
+  <h2>Player Pool</h2>
+  <div id="sort-controls">
+    <label for="sort-options">Sort by:</label>
+    <select id="sort-options">
+      <option value="alphabetical">Alphabetical (A–Z)</option>
+      <option value="position">Position (DEF → ATT)</option>
+      <option value="rating">Rating (3 → 1)</option>
+      <option value="selected">Selected</option>
+    </select>
+    <button id="sort-button">Sort</button>
+  </div>
+</div>
 
     <div class="grid" id="playerGrid"></div>
     <div class="spacer"></div>
 
-    <footer>
-      <div class="button-container">
-        <button onclick="randomSelect()">Select 18</button>
-        <button onclick="generateTeams()">Generate Teams</button>
-      </div>
-    </footer>
+  <footer>
+  <div class="button-container">
+    <div class="left-buttons">
+      <button onclick="randomSelect()">Select 18</button>
+      <button onclick="generateTeams()">Generate Teams</button>
+    </div>
+    <div id="selectedCount">Selected: 0</div>
+  </div>
+</footer>
 
   </div> <!-- End of selectionScreen -->
 </div>
@@ -123,7 +123,7 @@ const players = [
   { id: 29, name: "Babanguida", age: 23, position: "ATT", rating: 1, selected: false },
   { id: 30, name: "Minthol", age: 45, position: "ATT", rating: 1, selected: false },
   { id: 31, name: "Gosper", age: 37, position: "DEF", rating: 2, selected: false },
-  { id: 32, name: "Toona", age: 35, position: "MID", rating: 3, selected: false },
+  { id: 32, name: "Toonah", age: 35, position: "MID", rating: 3, selected: false },
     { id: 33, name: "Barking", age: 45, position: "ATT", rating: 2, selected: false },
         { id: 34, name: "Layerton", age: 45, position: "ATT", rating: 2, selected: false },
         { id: 35, name: "Ivan", age: 45, position: "DEF", rating: 2, selected: false }
