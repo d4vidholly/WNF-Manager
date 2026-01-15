@@ -8,21 +8,30 @@
   text-transform: uppercase;
   }
 
+      :root {
+      --main-dark: #171a21;
+      --accent: # ;
+      --main-light: #011338;
+      --text-colour: white;
+      --border: #062151;
+
+    }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Simpler 3-column layout for mobile */
     gap: 10px;
-    margin: 20px;
+    margin: 50px;
   }
 
 nav {
   display: flex;
   align-items: center;     /* Vertically center */
   justify-content: center; /* Horizontally center */
-  background-color: #171a21;
-  color: rgb(255, 255, 255);
-  font-size: 1.5rem;
-  height: 100px;
+  background-color: var(--main-dark);
+  color: var(--text-colour);
+  font-size: 1.2rem;
+  height: 120px;
   margin: 0;
   padding: 0;
   font-weight: 900;
@@ -30,7 +39,6 @@ nav {
 
 nav h1 {
     font-weight: 900;
-  margin: 0;
 }
 
 footer {
@@ -39,7 +47,7 @@ footer {
   left: 0;
   width: 100%;
   height: 100px;
-  background-color: #171a21;
+  background-color: var(--main-dark);
   margin: 0;
   color: white;
   z-index: 10;
@@ -70,19 +78,19 @@ footer {
 /* Hover lift */
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
 /* Player rating (left edge) */
 .card::before {
-  content: attr(data-rating);
+  content: attr(rating);
   position: absolute;
   left: 10px;
   top: 12px;
   font-size: 22px;
   font-weight: 800;
   font-style: italic;
-  color: #9fa6b2;
+  color: #ff0000;
 }
 
 /* Name */
@@ -122,26 +130,13 @@ footer {
   color: #0f2d1f;
 }
 
-/* Tick */
-.tick {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 16px;
-}
 
   .button-container {
     margin-top: 20px;
     text-align: center;
   }
 
-  .tick {
-  position: absolute;
-  top: 5px;
-  right: 8px;
-  font-size: 20px;
-  color: green;
-}
+
 
   button {
     padding: 10px 20px;
@@ -151,10 +146,11 @@ footer {
     background-color: #0f1115;
     color: white;
     cursor: pointer;
-    margin: 10px 10px;
+    margin: 20px 20px;
       font-weight: 900;
         font-family: "Oswald", "Arial Narrow", sans-serif;
         font-style: italic;
+          text-transform: uppercase;
   }
 
   .teams {
@@ -170,7 +166,7 @@ footer {
     border: 5px solid white;
     padding: 10px;
     border-radius: 10px;
-    height: auto;
+
 
   }
 
@@ -249,10 +245,17 @@ footer {
   align-items: center;
   padding: 0 20px;
       color: white;
-    margin: 10px;
+    margin: 0 30px;
+  
+}
+
+.playerpool h2  {
+      font-weight: 900;
+  font-style: italic;
 }
 
 #sort-controls {
+    font-family: "Oswald", "Arial Narrow", sans-serif;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -261,7 +264,7 @@ footer {
 footer {
   background-color: #171a21;
   color: white;
-  height: 100px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,6 +284,7 @@ footer {
 }
 
 #selectedCount {
+  margin-right: 50px;
   font-size: 1.2rem;
 }
 
@@ -293,7 +297,7 @@ footer {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.6); /* Dark background */
+  background-color: rgba(0,0,0,0.9); /* Dark background */
 }
 
 .modal-content {
@@ -374,5 +378,5 @@ footer {
   }
 
   button:hover  {
-    background-color: #3E2564;
+    background-color: #414141;
   }
