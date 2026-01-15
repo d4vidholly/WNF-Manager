@@ -139,25 +139,40 @@ function renderPlayers() {
 
   grid.innerHTML = "";
 
-  let count = 0;
-  players.forEach(player => {
-    if (player.selected) count++;
+  //Card Design
 
-    const card = document.createElement("div");
-    card.className = "card" + (player.selected ? " selected" : "");
-    card.innerHTML = `
-      ${player.selected ? '<div class="tick">✔️</div>' : ''}
-      <div style="font-size: 40px;">👤</div>
-      <div><strong>${player.name}</strong></div>
-      <div>Age: ${player.age}</div>
-      <div>${player.position} | ⭐ ${player.rating}</div>
-    `;
-    card.onclick = () => {
-      player.selected = !player.selected;
-      renderPlayers();
-    };
-    grid.appendChild(card);
-  });
+let count = 0;
+
+players.forEach(player => {
+  if (player.selected) count++;
+
+  const card = document.createElement("div");
+  card.className = "card" + (player.selected ? " selected" : "");
+
+  card.innerHTML = `
+    ${player.selected ? '<div class="tick"></div>' : ''}
+
+    <div class="player-name">${player.name}</div>
+
+    <div class="card-body">
+      <div class="rating">${player.rating}</div>
+
+      <div class="player-info">
+        <div class="age">AGE ${player.age}</div>
+        <div class="position">${player.position}</div>
+      </div>
+    </div>
+  `;
+
+  card.onclick = () => {
+    player.selected = !player.selected;
+    renderPlayers();
+  };
+
+  grid.appendChild(card);
+});
+
+//End of Card Design
 
   selectedCount.textContent = `Selected: ${count}`;
 }
@@ -268,6 +283,9 @@ teamB = [];
     }
   }
 
+
+
+
   document.getElementById("selectionScreen").style.display = "none";
   document.getElementById("teamScreen").style.display = "block";
   renderTeams();
@@ -298,10 +316,10 @@ function renderFormation(team, containerId) {
         const card = document.createElement("div");
 card.className = "mini-card";
 card.innerHTML = `
-  <div class="mini-photo">👤</div>
+<img src="pink-top.svg"
   <div class="mini-info">
     <strong>${p.name}</strong><br>
-    ${p.position}, ⭐${p.rating}
+    ${p.position},<br> ⭐${p.rating}
   </div>
 `;
 
@@ -314,7 +332,6 @@ if (isTouchDevice) {
         card.draggable = true;
         card.ondragstart = e => drag(e, p.id);
         card.innerHTML = `
-          <div class="mini-photo">👤</div>
           <div class="mini-info">
             <strong>${p.name}</strong><br>
             ${p.position}, ⭐${p.rating}

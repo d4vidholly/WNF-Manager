@@ -1,7 +1,11 @@
  body {
-    font-family: Arial, sans-serif;
+  font-family: "Oswald", "Arial Narrow", sans-serif;
     margin: 0;
-    background: #3E2564;
+    background: #171a21;
+      font-weight: 900;
+  font-style: italic;
+    letter-spacing: 1.2px;
+  text-transform: uppercase;
   }
 
   .grid {
@@ -15,15 +19,17 @@ nav {
   display: flex;
   align-items: center;     /* Vertically center */
   justify-content: center; /* Horizontally center */
-  background-color: #5A3A8D;
-  color: white;
+  background-color: #171a21;
+  color: rgb(255, 255, 255);
   font-size: 1.5rem;
   height: 100px;
   margin: 0;
   padding: 0;
+  font-weight: 900;
 }
 
 nav h1 {
+    font-weight: 900;
   margin: 0;
 }
 
@@ -33,26 +39,96 @@ footer {
   left: 0;
   width: 100%;
   height: 100px;
-  background-color: #5A3A8D;
+  background-color: #171a21;
   margin: 0;
   color: white;
   z-index: 10;
 }
 
-  .card {
-    position: relative;
-    background: white;
-    border: 2px solid #ccc;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 10px;
-  }
+/* Base card */
+.card {
+  position: relative;
+  background: linear-gradient(180deg, #0f1115, #171a21);
+  color: #e6e6e6;
+  border-radius: 14px;
+  padding: 14px 16px 16px;
+  cursor: pointer;
+  border: 1px solid #2a2e38;
+  transition: all 0.25s ease;
+  font-family: "Oswald", "Arial Narrow", sans-serif;
+  overflow: hidden;
+}
 
-  .card.selected {
-    border-color: #3E2564;
-    background: #e3bffd;
-  }
+.player-name  {
+  font-size: 24px !important;
+  font-weight: 900;
+  font-style: italic;
+    letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+/* Hover lift */
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+}
+
+/* Player rating (left edge) */
+.card::before {
+  content: attr(data-rating);
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  font-size: 22px;
+  font-weight: 800;
+  font-style: italic;
+  color: #9fa6b2;
+}
+
+/* Name */
+.card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 32px;
+  letter-spacing: 1.2px;
+  font-style: italic;
+  text-transform: uppercase;
+}
+
+/* Age + Position */
+.card div {
+  font-size: 13px;
+  color: #b8bcc6;
+}
+
+.card div:last-child {
+  margin-top: 4px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Selected state (FC-style green invert) */
+.card.selected {
+  background: linear-gradient(180deg, #00ff87, #00c96b);
+  color: #08130d;
+  border-color: #00ff87;
+}
+
+.card.selected strong {
+  color: #08130d;
+}
+
+.card.selected div {
+  color: #0f2d1f;
+}
+
+/* Tick */
+.tick {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 16px;
+}
 
   .button-container {
     margin-top: 20px;
@@ -72,10 +148,13 @@ footer {
     font-size: 20px;
     border: 2px solid white;
     border-radius: 8px;
-    background-color: #5A3A8D;
+    background-color: #0f1115;
     color: white;
     cursor: pointer;
     margin: 10px 10px;
+      font-weight: 900;
+        font-family: "Oswald", "Arial Narrow", sans-serif;
+        font-style: italic;
   }
 
   .teams {
@@ -87,7 +166,7 @@ footer {
   .team {
     margin: 10px;
     width: 100%;
-    background: #5A3A8D;
+    background: linear-gradient(180deg, #0f1115, #171a21);
     border: 5px solid white;
     padding: 10px;
     border-radius: 10px;
@@ -121,8 +200,8 @@ footer {
 
   .mini-card {
     width: 100px;
-    background: white;
-    border: 2px solid #ccc;
+    background: rgba(0, 0, 0, 0.05);
+    color: white;
     padding: 10px;
     text-align: center;
     border-radius: 10px;
@@ -180,7 +259,7 @@ footer {
 }
 
 footer {
-  background-color: #5A3A8D;
+  background-color: #171a21;
   color: white;
   height: 100px;
   display: flex;
@@ -218,7 +297,7 @@ footer {
 }
 
 .modal-content {
-  background-color: #3E2564;
+  background-color: #0f1115;
   color: white;
   margin: 10% auto;
   padding: 20px;
